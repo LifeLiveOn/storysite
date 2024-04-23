@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.core.exceptions import ValidationError
-from .models import CustomUser
+from django.forms import ModelForm
+from PIL import Image
+from .models import CustomUser, Story
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -13,4 +14,10 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = CustomUser
         fields = ('email',)
+
+
+# class StoryCreateForm(ModelForm):
+#     class Meta:
+#         model = Story
+#         fields = ['name', 'description','is_valid']
 

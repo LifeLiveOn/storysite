@@ -1,16 +1,27 @@
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
+from django.views.generic import CreateView, ListView
+from django.utils.decorators import method_decorator
+
 from .forms import CustomUserCreationForm
 
 User = get_user_model()
 
+from .models import Story
+
 
 # Create your views here.
-def index(request):
-    return None
+class HomePageView(ListView):
+    # paginate_by = 5
+    # descending order
+    model = Story
+    ordering = ['-id']
+
+    context_object_name = 'stories'
+    template_name = 'story/home.html'
 
 
 def about(request):
@@ -40,3 +51,15 @@ def story(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse_lazy("home"))
+
+
+class StoryCreateView(LoginRequiredMixin, CreateView):
+    model = Story
+    fields = ['story_name', 'story_description', 'is_valid', 'story_image']
+    template_name = 'story/create.html'
+    success_url = reverse_lazy('home')
+
+    # use current login user as the default user when creating story
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)

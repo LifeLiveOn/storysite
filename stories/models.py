@@ -1,8 +1,8 @@
-from django.utils import timezone
-
+from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import UserManager, PermissionsMixin
 from django.db import models
+from django.utils import timezone
 
 
 class CustomUserManager(UserManager):
@@ -26,11 +26,29 @@ class CustomUserManager(UserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+class Event(models.Model):
+    title = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    image = models.ImageField(upload_to='eventImages/', null=True, blank=True)
+    date = models.DateField()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["date"]
+
+
 class Story(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     story_name = models.CharField(max_length=255)
     story_description = models.TextField(max_length=500)
-    story_image = models.ImageField(upload_to='storyImages/')
+    story_image = models.ImageField(upload_to='storyImages/', verbose_name="Image", null=True, blank=True)
     is_valid = models.BooleanField(default=False)
+    events = models.ForeignKey("Event", on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.story_name
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -63,17 +81,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __get_short_name(self):
         return self.email.split('@')[0]
-
-
-class Event(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField(max_length=500)
-    image = models.ImageField(upload_to='eventImages/')
-    date = models.DateField()
-    story = models.ForeignKey("Story", on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        ordering = ["date"]
