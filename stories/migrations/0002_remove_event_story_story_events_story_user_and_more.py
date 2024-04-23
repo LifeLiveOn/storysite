@@ -14,15 +14,15 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RemoveField(
             model_name='event',
-            name='story',
+            name='stories',
         ),
         migrations.AddField(
-            model_name='story',
+            model_name='stories',
             name='events',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='stories.event'),
         ),
         migrations.AddField(
-            model_name='story',
+            model_name='stories',
             name='user',
             field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AlterField(
-            model_name='story',
+            model_name='stories',
             name='story_image',
             field=models.ImageField(blank=True, null=True, upload_to='storyImages/', verbose_name='Image'),
         ),

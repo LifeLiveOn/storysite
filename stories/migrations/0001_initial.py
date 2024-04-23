@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(max_length=500)),
                 ('image', models.ImageField(upload_to='eventImages/')),
                 ('date', models.DateField()),
-                ('story', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='stories.story')),
+                ('stories', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='stories.stories')),
             ],
             options={
                 'ordering': ['date'],
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=255, unique=True, verbose_name='email address')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
-                ('storyID', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='stories.story')),
+                ('storyID', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='stories.stories')),
             ],
             options={
                 'abstract': False,

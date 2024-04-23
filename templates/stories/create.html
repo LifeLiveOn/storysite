@@ -1,0 +1,33 @@
+{% extends 'stories/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid">
+        <form method="POST" enctype="multipart/form-data">
+            <!-- Security token -->
+            <div class="mb-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_story_name" class="form-label">Story Title</label>
+                    <input type="text" class="form-control" name="story_name" maxlength="255" required="" id="id_story_name">
+                </div>
+                <div class="mb-3">
+                    <label for="id_story_description" class="form-label">Description</label>
+                    <textarea name="story_description" class="form-control" cols="40" rows="10" maxlength="500" required="" id="id_story_description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="id_is_valid" class="form-label">Is this verify?</label>
+                    <input type="checkbox" class="form-check-input" name="is_valid" id="id_is_valid">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Insert story image</label>
+                    <input type="file" class="form-control" name="story_image" accept="image/*" id="">
+                </div>
+                <!-- Using the formset -->
+{#                {{ form.as_ul }}#}
+                <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

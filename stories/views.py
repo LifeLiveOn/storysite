@@ -21,7 +21,7 @@ class HomePageView(ListView):
     ordering = ['-id']
 
     context_object_name = 'stories'
-    template_name = 'story/home.html'
+    template_name = 'stories/home.html'
 
 
 def about(request):
@@ -56,10 +56,10 @@ def logout_view(request):
 class StoryCreateView(LoginRequiredMixin, CreateView):
     model = Story
     fields = ['story_name', 'story_description', 'is_valid', 'story_image']
-    template_name = 'story/create.html'
+    template_name = 'stories/create.html'
     success_url = reverse_lazy('home')
 
-    # use current login user as the default user when creating story
+    # use current login user as the default user when creating stories
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
