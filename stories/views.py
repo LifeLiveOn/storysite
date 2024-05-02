@@ -1,7 +1,7 @@
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView
 
@@ -22,15 +22,9 @@ class HomePageView(ListView):
     template_name = 'stories/home.html'
 
 
-class StoryDetailView(DetailView):
-    model = Story
-    template_name = 'stories/detail.html'
-    context_object_name = 'story'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # No need to fetch events here as it can be accessed directly in the template using 'story.events.all'
-        return context
+def story_detail(request, story_id):
+    story = get_object_or_404(Story, pk=story_id)
+    return render(request, 'stories/detail.html', {'story': story})
 
 
 def about(request):
