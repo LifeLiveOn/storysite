@@ -1,0 +1,16 @@
+<!-- story_detail.html -->
+{% extends 'stories/base.html' %}
+{% block content %}
+    <h1>{{ story.story_name }}</h1>
+    <p>{{ story.story_description }}</p>
+    <img src="{{ story.story_image.url }}" alt="{{ story.story_name }}">
+
+    <h2>Events:</h2>
+    <ul>
+        {% for event in story.events.all %}
+            <li>{{ event.title }} on {{ event.date }}</li>
+        {% empty %}
+            <li>No events linked to this story.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

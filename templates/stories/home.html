@@ -1,5 +1,5 @@
 {% extends 'stories/base.html' %}
-{% load static %}
+
 
 {% block content %}
     <div class="legend text-center mt-auto py-5" style="background-color:#c7f5ff">
@@ -15,8 +15,8 @@
                     <div class="card mb-4">
                         <div class="row m-0">
                             <div class="col p-0" style="max-height: 400px">
-                                <img src="media/{{ story.story_image }}" class="card-img-top" alt="..."
-                                     style="min-width: 100%;height: 400px;">
+                                <a href="{% url 'storyDetail' pk=story.id  %}"><img src="media/{{ story.story_image }}" class="card-img-top" alt="..."
+                                     style="min-width: 100%;height: 400px;"></a>
                             </div>
                             <div class="col">
                                 <div class="card-body">

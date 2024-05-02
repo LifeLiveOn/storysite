@@ -3,14 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
-from django.utils.decorators import method_decorator
+from django.views.generic import CreateView, ListView, DetailView
 
 from .forms import CustomUserCreationForm
+from .models import Story
 
 User = get_user_model()
-
-from .models import Story
 
 
 # Create your views here.
@@ -22,6 +20,17 @@ class HomePageView(ListView):
 
     context_object_name = 'stories'
     template_name = 'stories/home.html'
+
+
+class StoryDetailView(DetailView):
+    model = Story
+    template_name = 'stories/detail.html'
+    context_object_name = 'story'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # No need to fetch events here as it can be accessed directly in the template using 'story.events.all'
+        return context
 
 
 def about(request):
@@ -40,11 +49,6 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
-
-
-@login_required
-def story(request):
-    pass
 
 
 @login_required
