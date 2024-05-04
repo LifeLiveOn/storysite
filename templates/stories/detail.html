@@ -1,16 +1,29 @@
 <!-- story_detail.html -->
 {% extends 'stories/base.html' %}
 {% block content %}
-    <h1>{{ story.story_name }}</h1>
-    <p>{{ story.story_description }}</p>
-    <img src="{{ story.story_image.url }}" alt="{{ story.story_name }}">
+    <div class="container ">
 
-    <h2>Events:</h2>
-    <ul>
-        {% for event in story.events.all %}
-            <li>{{ event.title }} on {{ event.date }}</li>
-        {% empty %}
-            <li>No events linked to this story.</li>
-        {% endfor %}
-    </ul>
+        <h1 class="text-center fs-1 fw-bold">{{ story.story_name }}</h1>
+
+        <div class="text-center p-5 mb-4 fs-4 border rounded-pill" style="background-color:#343a40">
+            <p class="text-light fst-italic">{{ story.story_description }}</p>
+        </div>
+
+        <img class="rounded-3 mx-auto mb-4 d-block" src="{{ story.story_image.url }}"
+             alt="{{ story.story_name }}" style="max-width:800px;min-height:500px;object-fit: scale-down;">
+
+        <h2>Events:</h2>
+        <ul>
+            {% for event in story.events.all %}
+                <div class="border mb-4">
+                    <li>{{ event.title }} on {{ event.date }}</li>
+                    <img class="rounded-3 mx-auto mb-4 d-block img-thumbnail" src="{{ event.image.url }}" alt="cornerstone image" style="max-width:800px;min-height:500px;object-fit: scale-down;">
+                </div>
+            {% empty %}
+                <li>No events linked to this story.</li>
+            {% endfor %}
+
+        </ul>
+
+    </div>
 {% endblock %}
