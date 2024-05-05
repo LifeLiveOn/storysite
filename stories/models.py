@@ -31,6 +31,7 @@ class Event(models.Model):
     description = models.TextField(max_length=500, null=True, blank=True)
     image = models.ImageField(upload_to='eventImages/', null=True, blank=True)
     date = models.DateField()
+    story = models.ForeignKey('Story', on_delete=models.CASCADE, null=True, blank=True, related_name='events')
 
     def __str__(self):
         return self.title
@@ -40,12 +41,12 @@ class Event(models.Model):
 
 
 class Story(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='story')
     story_name = models.CharField(max_length=255)
     story_description = models.TextField(max_length=500)
     story_image = models.ImageField(upload_to='storyImages/', verbose_name="Image", null=True, blank=True)
     is_valid = models.BooleanField(default=False)
-    events = models.ManyToManyField("stories.Event", blank=True)
+
 
     def __str__(self):
         return self.story_name
@@ -53,7 +54,7 @@ class Story(models.Model):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=100)
-    story = models.OneToOneField("stories.Story", on_delete=models.CASCADE, null=True, blank=True)
+    storyLink = models.OneToOneField("Story", on_delete=models.CASCADE, null=True, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
     last_login = models.DateTimeField(blank=True, null=True)
 
