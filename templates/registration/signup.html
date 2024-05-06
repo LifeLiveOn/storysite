@@ -1,13 +1,37 @@
 <!-- templates/registration/signup.html -->
-{% extends "registration/base.html" %}
+{% extends "stories/base.html" %}
 
-{% block title %}Sign Up{% endblock %}
-
+{% block title %}<title>Sign Up</title>{% endblock %}
+{% block nav %} {% endblock %}
 {% block content %}
-<h2>Sign Up</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Sign Up</button>
-</form>
+    <div class="container">
+        <div class="wrapper">
+            <div class="title"><span>Sign up form</span></div>
+            <form method="post">
+                 {% csrf_token %}
+                <div class="row">
+                    <i class="fa-solid fa-user"></i>
+                    {{ form.email }}
+                </div>
+                <div class="row">
+                    <i class="fa-solid fa-lock"></i>
+                    {{ form.password1 }}
+                </div>
+                <ul>
+                    <li>Your password can’t be too similar to your other personal information.</li>
+                    <li>Your password must contain at least 8 characters.</li>
+                    <li>Your password can’t be a commonly used password.</li>
+                    <li>Your password can’t be entirely numeric.</li>
+                </ul>
+                <div class="row">
+                    <i class="fa-solid fa-lock"></i>
+                    {{ form.password2 }}
+                </div>
+                <div class="pass"><a href="{% url 'login' %}">Already Have an account?</a></div>
+                <div class="row button">
+                    <input type="submit" value="Login">
+                </div>
+            </form>
+        </div>
+
 {% endblock %}

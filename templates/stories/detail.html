@@ -1,5 +1,7 @@
 <!-- story_detail.html -->
 {% extends 'stories/base.html' %}
+{% block alternate-style %}
+{% endblock %}
 {% block content %}
     <div class="container ">
 
@@ -9,7 +11,7 @@
             <p class="text-light fst-italic">{{ story.story_description }}</p>
         </div>
 
-        <img class="rounded-3 mx-auto mb-4 d-block" src="{{ story.story_image.url }}"
+        <img class="rounded-3 center-row" src="{{ story.story_image.url }}"
              alt="{{ story.story_name }}" style="max-width:800px;min-height:500px;object-fit: scale-down;">
 
         <h2>Events:</h2>
@@ -17,7 +19,7 @@
             {% for event in story.events.all %}
                 <div class="border mb-4">
                     <li>{{ event.title }} on {{ event.date }}</li>
-                    <img class="rounded-3 mx-auto mb-4 d-block img-thumbnail" src="{{ event.image.url }}" alt="cornerstone image" style="max-width:800px;min-height:500px;object-fit: scale-down;">
+                    <img class="rounded-3 center-row img-thumbnail" src="{{ event.image.url }}" alt="cornerstone image" style="max-width:800px;min-height:500px;object-fit: scale-down;">
                 </div>
             {% empty %}
                 <li>No events linked to this story.</li>

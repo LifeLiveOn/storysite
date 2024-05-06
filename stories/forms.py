@@ -15,9 +15,3 @@ class CustomUserChangeForm(UserChangeForm):
         model = CustomUser
         fields = ('email',)
 
-
-# class StoryCreateForm(ModelForm):
-#     class Meta:
-#         model = Story
-#         fields = ['name', 'description','is_valid']
-

@@ -1,31 +1,44 @@
 {% extends 'stories/base.html' %}
 
+{% block alternate-style %}
+{% endblock %}
 
 {% block content %}
-    <div class="legend text-center mt-auto py-5" style="background-color:#c7f5ff">
+    <div class="legend text-center mt-auto py-5 text-white" style="background-color:#8c82d7">
         <h2>Life is short, do you wish to leave behind an extraordinary story for all to read?</h2>
         <br>
-        <p class="text-muted">Join us today to share your amazing journey to the whole world. <a
-                href="{% url 'create' %}">Share
-            here!</a></p>
+        <h5 class="text-muted fst-italic" style="    color: rgb(255 255 255 / 75%) !important;">Join us today to share your amazing
+            journey to the whole world.
+            {% if user.id %}
+                <a
+                        href="{% url 'create' %}">Share here!
+                </a>
+            {% else %}
+                <a style="color:rgb(52,58,64)"
+                        href="{% url 'signup' %}">Create Account!
+                </a>
+            {% endif %}
+
+        </h5>
     </div>
     <div class="container pt-4">
-            {% for story in stories %}
-                {% if story.is_valid %}
-                    <div class="card mb-4">
-                        <div class="row m-0">
-                            <div class="col p-0" style="max-height: 400px">
-                                <a href="{% url 'story_detail' story_id=story.id  %}"><img src="media/{{ story.story_image }}" class="card-img-top" alt="..."
-                                     style="min-width: 100%;height: 400px;"></a>
-                            </div>
-                            <div class="col">
-                                <div class="card-body">
-                                    <p class="card-text">{{ story.story_description }}</p>
-                                </div>
+        {% for story in stories %}
+            {% if story.is_valid %}
+                <div class="card mb-4">
+                    <div class="row m-0">
+                        <div class="col p-0" style="max-height: 400px">
+                            <a href="{% url 'story_detail' story_id=story.id %}"><img
+                                    src="media/{{ story.story_image }}" class="card-img-top" alt="..."
+                                    style="min-width: 100%;height: 400px;"></a>
+                        </div>
+                        <div class="col">
+                            <div class="card-body">
+                                <p class="card-text">{{ story.story_description }}</p>
                             </div>
                         </div>
                     </div>
-                {% endif %}
-            {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 {% endblock %}
