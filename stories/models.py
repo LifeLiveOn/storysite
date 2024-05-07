@@ -41,12 +41,12 @@ class Event(models.Model):
 
 
 class Story(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='story')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True,
+                                related_name='story')
     story_name = models.CharField(max_length=255)
     story_description = models.TextField(max_length=500)
     story_image = models.ImageField(upload_to='storyImages/', verbose_name="Image", null=True, blank=True)
     is_valid = models.BooleanField(default=False)
-
 
     def __str__(self):
         return self.story_name

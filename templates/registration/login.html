@@ -5,7 +5,19 @@
 {% block nav %} {% endblock %}
 
 {% block content %}
-
+    {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible">
+            <strong>Please correct the following errors:</strong>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
     <div class="container">
     <div class="wrapper">
         <div class="title"><span>Login Form</span></div>
@@ -26,21 +38,5 @@
             <div class="signup-link">Not a member? <a href="{% url 'signup' %}">Signup now</a></div>
         </form>
     </div>
-{#    <div class="card center-row position-absolute top-50 start-50 translate-middle bg-dark text-white"#}
-{#         style="width:250px;height:350px;">#}
-{#        <h2 class="p-4">Log In</h2>#}
-{#        <div class="card-body">#}
-{#            <form method="post">#}
-{#                <div class="mb-3">#}
-{#                    <label for="id_username">Email address:</label>#}
-{#                    {{ form.username }}#}
-{#                </div>#}
-{#                <div class="mb-3">#}
-{#                    <label for="id_password">Password:</label>#}
-{#                    {{ form.password }}#}
-{#                </div>#}
-{#                <button class="btn btn-success btn-lg" type="submit">Log In</button>#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
+    </div>
 {% endblock %}

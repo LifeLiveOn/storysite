@@ -1,10 +1,10 @@
-from django.contrib.auth import logout, get_user_model
+from django.contrib import messages
+from django.contrib.auth import logout, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, DetailView
-
+from django.views.generic import CreateView, ListView
 from .forms import CustomUserCreationForm
 from .models import Story
 
@@ -35,14 +35,11 @@ def contact(request):
     return None
 
 
-def login(request):
-    return None
-
-
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+
+    success_url = reverse_lazy('login')
 
 
 @login_required

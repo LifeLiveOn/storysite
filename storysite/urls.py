@@ -19,8 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('',include('stories.urls',)),
-    path('admin/', admin.site.urls),
-    path('stories/', include('django.contrib.auth.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #serve images on localhost, to view it
-
+                  path('', include('stories.urls', )),
+                  path('admin/', admin.site.urls),
+                  path('stories/', include('django.contrib.auth.urls')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # serve images on localhost, to view it

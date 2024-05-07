@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
+.text-white {
+    color: white !important;
+  font-family: 'Poppins', sans-serif !important;;
+}
+
 .center-row
 {
     display: block;
@@ -111,7 +116,7 @@ form .button input:hover{
   font-size: 17px;
 }
 .wrapper form .signup-link a{
-  color: #16a085;
+  color: #47c2ec !important;
   text-decoration: none;
 }
 form .signup-link a:hover{

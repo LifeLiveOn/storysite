@@ -4,11 +4,26 @@
 {% block title %}<title>Sign Up</title>{% endblock %}
 {% block nav %} {% endblock %}
 {% block content %}
+        {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible">
+                <strong>Please correct the following errors:</strong>
+                <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            {% endfor %}
+                        {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
     <div class="container">
+
         <div class="wrapper">
             <div class="title"><span>Sign up form</span></div>
+
             <form method="post">
-                 {% csrf_token %}
+                {% csrf_token %}
                 <div class="row">
                     <i class="fa-solid fa-user"></i>
                     {{ form.email }}
@@ -26,12 +41,14 @@
                 <div class="row">
                     <i class="fa-solid fa-lock"></i>
                     {{ form.password2 }}
+
                 </div>
                 <div class="pass"><a href="{% url 'login' %}">Already Have an account?</a></div>
                 <div class="row button">
-                    <input type="submit" value="Login">
+                    <input type="submit" value="Sign up">
                 </div>
             </form>
         </div>
+    </div>
 
 {% endblock %}
