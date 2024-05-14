@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-
+:root{
+  --purple-main:#8c82d7;
+  --purple-sec:#aca6e7;
+  --purple-bold:#b48ed6;
+}
 .text-white {
     color: white !important;
   font-family: 'Poppins', sans-serif !important;;
@@ -20,7 +24,7 @@
   font-family: 'Poppins',sans-serif;
 }
 body{
-  background: #8c82d7;
+  background: var(--purple-main);
   overflow: hidden;
 }
 ::selection{
@@ -39,7 +43,7 @@ body{
 }
 .wrapper .title{
   height: 90px;
-  background: #aca6e7;
+  background: var(--purple-sec);
   border-radius: 5px 5px 0 0;
   color: #f3f9ff;
   font-size: 30px;
@@ -79,7 +83,7 @@ form .row input::placeholder{
   height: 100%;
   color: #fff;
   font-size: 18px;
-  background: #b48ed6;
+  background: var(--purple-bold);
   border: 1px solid #ffffff;
   border-radius: 5px 0 0 5px;
   display: flex;
@@ -93,17 +97,19 @@ form .row input::placeholder{
 .wrapper form .pass a{
   color: #47c2eb;
   font-size: 17px;
+  font-weight: bold;
   text-decoration: none;
 }
 .wrapper form .pass a:hover{
   text-decoration: underline;
+  color: red;
 }
 .wrapper form .button input{
   color: #fff;
   font-size: 20px;
   font-weight: 500;
   padding-left: 0px;
-  background: #b48ed6;
+  background: var(--purple-bold);
   border: 1px solid #fcfcfc;
   cursor: pointer;
 }
@@ -116,7 +122,7 @@ form .button input:hover{
   font-size: 17px;
 }
 .wrapper form .signup-link a{
-  color: #47c2ec !important;
+  color: #030303 !important;
   text-decoration: none;
 }
 form .signup-link a:hover{

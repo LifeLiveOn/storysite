@@ -1,31 +1,40 @@
-<!-- story_detail.html -->
 {% extends 'stories/base.html' %}
+{% load static %}
 {% block alternate-style %}
+    <link href="{% static 'css/detail.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <div class="container ">
+    <div class="container mt-5">
 
-        <h1 class="text-center fs-1 fw-bold">{{ story.story_name }}</h1>
-
-        <div class="text-center p-5 mb-4 fs-4 border rounded-pill" style="background-color:#343a40">
-            <p class="text-light fst-italic">{{ story.story_description }}</p>
+    <a href="{% url 'add_event' story_id=story.id %}" class="btn btn-primary">Add Events!</a>
+    <div class="main-story">
+        <img src="{{ story.story_image.url }}" alt="{{ story.story_name }}" class="main-story-image w-50 p-3">
+        <h1>{{ story.story_name }}</h1>
+        <p >{{ story.story_description }}</p>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="timeline1">
+                {% for event in story.events.all %}
+                    <a href="#event{{ forloop.counter }}" class="timeline-date">{{ forloop.counter }}</a>
+                {% endfor %}
+            </div>
         </div>
-
-        <img class="rounded-3 center-row" src="{{ story.story_image.url }}"
-             alt="{{ story.story_name }}" style="max-width:800px;min-height:500px;object-fit: scale-down;">
-
-        <h2>Events:</h2>
-        <ul>
+    </div>
+        <div class="timeline">
             {% for event in story.events.all %}
-                <div class="border mb-4">
-                    <li>{{ event.title }} on {{ event.date }}</li>
-                    <img class="rounded-3 center-row img-thumbnail" src="{{ event.image.url }}" alt="cornerstone image" style="max-width:800px;min-height:500px;object-fit: scale-down;">
+                <div class="timeline-item w-auto p-3">
+
+                    <div class="event-details" id="event{{ forloop.counter }}">
+                        <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-image">
+                        <div class="event-content">
+                            <h4>{{ event.title }}</h4>
+                            <p>{{ event.description }}</p>
+                            <span class="timeline-date">{{ event.date }}</span>
+                        </div>
+                    </div>
                 </div>
-            {% empty %}
-                <li>No events linked to this story.</li>
             {% endfor %}
-
-        </ul>
-
+        </div>
     </div>
 {% endblock %}

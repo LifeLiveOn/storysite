@@ -1,8 +1,9 @@
-from django.urls import path
-from . import views
-from .views import SignUpView
 from django.contrib.auth import views as auth_views
+from django.urls import path
+from django import forms
+from . import views
 from .forms import LoginForm
+from .views import SignUpView
 
 urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
@@ -12,8 +13,8 @@ urlpatterns = [
     # default login /login
     path('logout/', views.logout_view, name='logout'),
     path('stories/login/', auth_views.LoginView.as_view(template_name="registration/login.html",
-                                                        authentication_form=LoginForm)
-         , name='login'),
+                                                        authentication_form=LoginForm), name='login'),
     path('story/<int:story_id>/', views.story_detail, name='story_detail'),
-    path('create/', views.StoryCreateView.as_view(), name='create')
+    path('create/', views.StoryCreateView.as_view(), name='create'),
+    path('add/<int:story_id>', views.EventCreateView.as_view(), name='add_event')
 ]
