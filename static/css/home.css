@@ -1,0 +1,17 @@
+@media screen and (min-width: 1000px){
+    .story {
+        max-width: 50% !important;
+
+    }
+}
+@media screen and (min-width: 500px){
+    .story {
+        max-width: 100% !important;
+
+    }
+}
+.story img{
+    width:  280px;
+    height: 250px;
+    object-fit: cover;
+}

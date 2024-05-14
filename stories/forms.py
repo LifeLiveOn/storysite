@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserChangeForm, AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from .models import CustomUser
+from .models import CustomUser, Event
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -43,3 +43,12 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'password']
+
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ['title', 'description', 'image', 'date']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }

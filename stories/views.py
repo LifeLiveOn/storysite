@@ -1,12 +1,12 @@
-from django.contrib import messages
-from django.contrib.auth import logout, get_user_model, login
+from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView
-from .forms import CustomUserCreationForm
-from .models import Story
+
+from .forms import CustomUserCreationForm, EventForm
+from .models import Story, Event
 
 User = get_user_model()
 
@@ -22,16 +22,16 @@ class HomePageView(ListView):
     template_name = 'stories/home.html'
 
 
-def story_detail(request, story_id):
+def story_detail(res, story_id):
     story = get_object_or_404(Story, pk=story_id)
-    return render(request, 'stories/detail.html', {'story': story})
+    return render(res, 'stories/detail.html', {'story': story})
 
 
-def about(request):
+def about(res):
     return None
 
 
-def contact(request):
+def contact(res):
     return None
 
 
@@ -43,8 +43,8 @@ class SignUpView(CreateView):
 
 
 @login_required
-def logout_view(request):
-    logout(request)
+def logout_view(res):
+    logout(res)
     return redirect(reverse_lazy("home"))
 
 
@@ -58,3 +58,19 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class EventCreateView(LoginRequiredMixin, CreateView):
+    model = Event
+    form_class = EventForm
+    template_name = 'stories/add.html'
+
+    def form_valid(self, form):
+        story_id = self.kwargs['story_id']
+        form.instance.story = get_object_or_404(Story, id=story_id)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Assuming 'story_id' is the name of the URL pattern variable
+        story_id = self.kwargs.get('story_id')
+        return reverse('story_detail', args=[story_id])

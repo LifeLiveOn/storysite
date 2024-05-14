@@ -1,0 +1,93 @@
+body {
+    background-color: #b5b3c5;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.main-story {
+    margin-bottom: 50px;
+    padding: 20px;
+    text-align: center;
+}
+
+.main-story p {
+    color: white;
+    font-family: cursive;
+    font-weight: 500;
+    font-size: larger;
+}
+
+.main-story-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.timeline1 {
+    height: auto;
+    margin-left: 0;
+    text-align: center;
+}
+
+.timeline {
+    position: relative;
+    margin-left: 40px;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.timeline-date {
+    min-width: 100px;
+    text-align: right;
+    margin-right: 20px;
+    font-size: 20px;
+    color: #343a40;
+    font-weight: bold;
+}
+
+.event-details {
+    flex: 1;
+    padding: 20px;
+    margin-left: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.event-image {
+    width: 100%; /* Full width of its container */
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Media query for devices with max-width of 600px (common phone screen size breakpoint) */
+@media (max-width: 600px) {
+    .event-image {
+        object-fit: scale-down; /* Scales down the image if it's too big for the container */
+    }
+}
+
+.event-content {
+    flex-grow: 1;
+    margin-top: 20px;
+}
+
+.event-content h4 {
+    color: #333;
+    margin-bottom: 10px;
+}
