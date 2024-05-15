@@ -5,22 +5,23 @@
 {% endblock %}
 {% block content %}
     <div class="container mt-5">
-
-    <a href="{% url 'add_event' story_id=story.id %}" class="btn btn-primary">Add Events!</a>
-    <div class="main-story">
-        <img src="{{ story.story_image.url }}" alt="{{ story.story_name }}" class="main-story-image w-50 p-3">
-        <h1>{{ story.story_name }}</h1>
-        <p >{{ story.story_description }}</p>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="timeline1">
-                {% for event in story.events.all %}
-                    <a href="#event{{ forloop.counter }}" class="timeline-date">{{ forloop.counter }}</a>
-                {% endfor %}
+        {% if user.id == story.user_id %}
+            <a href="{% url 'add_event' story_id=story.id %}" class="btn btn-primary">Add Events!</a>
+        {% endif %}
+        <div class="main-story">
+            <img src="{{ story.story_image.url }}" alt="{{ story.story_name }}" class="main-story-image w-50 p-3">
+            <h1>{{ story.story_name }}</h1>
+            <p>{{ story.story_description }}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="timeline1">
+                    {% for event in story.events.all %}
+                        <a href="#event{{ forloop.counter }}" class="timeline-date">{{ forloop.counter }}</a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
         <div class="timeline">
             {% for event in story.events.all %}
                 <div class="timeline-item w-auto p-3">

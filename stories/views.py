@@ -45,7 +45,7 @@ class SignUpView(CreateView):
 @login_required
 def logout_view(res):
     logout(res)
-    return redirect(reverse_lazy("home"))
+    return reverse(reverse_lazy("home"))
 
 
 class StoryCreateView(LoginRequiredMixin, CreateView):
@@ -58,7 +58,7 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-
+    
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
