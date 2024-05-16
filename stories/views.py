@@ -45,7 +45,7 @@ class SignUpView(CreateView):
 @login_required
 def logout_view(res):
     logout(res)
-    return reverse(reverse_lazy("home"))
+    return redirect(reverse_lazy('login'))
 
 
 class StoryCreateView(LoginRequiredMixin, CreateView):

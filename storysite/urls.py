@@ -21,7 +21,7 @@ from django.urls import path, include
 urlpatterns = [
                   path('', include('stories.urls', )),
                   path('admin/', admin.site.urls),
-                  path('stories/', include('django.contrib.auth.urls')),
+                  path('', include('django.contrib.auth.urls')),
               ]
 
 if settings.DEBUG:

@@ -12,8 +12,8 @@ urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
     # default login /login
     path('logout/', views.logout_view, name='logout'),
-    path('stories/login/', auth_views.LoginView.as_view(template_name="registration/login.html",
-                                                        authentication_form=LoginForm), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name="registration/login.html",
+                                                authentication_form=LoginForm), name='login'),
     path('story/<int:story_id>/', views.story_detail, name='story_detail'),
     path('create/', views.StoryCreateView.as_view(), name='create'),
     path('add/<int:story_id>', views.EventCreateView.as_view(), name='add_event')
