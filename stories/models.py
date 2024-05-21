@@ -54,7 +54,6 @@ class Story(models.Model):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=100)
-    storyLink = models.OneToOneField("Story", on_delete=models.CASCADE, null=True, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
     last_login = models.DateTimeField(blank=True, null=True)
 

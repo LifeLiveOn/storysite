@@ -1,28 +1,36 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from django.utils.html import format_html
 from .models import CustomUser, Event, Story
 
 
-class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
-    model = CustomUser
-    list_display = ["email", "name"]  # Adjusted to display email and name
-    fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('name',)}),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('name',)}),
-    )
-    search_fields = ['email', 'name']
-    ordering = ['email']
+class StoryInline(admin.StackedInline):
+    model = Story
+    can_delete = False
+    verbose_name_plural = 'Stories'
+    fk_name = 'user'
+
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email_link', 'is_active', 'is_staff', 'is_superuser', 'story')
+    fields = ('name', 'email', 'is_active', 'is_staff', 'is_superuser')
+    inlines = [StoryInline]
+
+    def email_link(self, obj):
+        link = f'/admin/stories/customuser/{obj.id}/change/'
+        return format_html('<a href="{}">{}</a>', link, obj.email)
+
+    email_link.short_description = 'Email Address'
 
 
 # Register the CustomUser model with its corresponding CustomUserAdmin
-admin.site.register(CustomUser)
+
 
 # Register Event and Story models with the default admin interface
 admin.site.register(Event)
-admin.site.register(Story)
+
+
+@admin.register(Story)
+class StoryAdmin(admin.ModelAdmin):
+    list_display = ('story_name', 'is_valid')
+    fields = ('user', 'story_name', 'story_description', 'story_image', 'is_valid')

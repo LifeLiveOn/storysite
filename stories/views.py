@@ -56,6 +56,7 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
 
     # use current login user as the default user when creating stories
     def form_valid(self, form):
+        print(form.cleaned_data)
         form.instance.user = self.request.user
         return super().form_valid(form)
 
