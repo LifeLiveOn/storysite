@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 
 from .forms import CustomUserCreationForm, EventForm
 from .models import Story, Event
@@ -58,7 +58,7 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-    
+
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
@@ -74,3 +74,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         # Assuming 'story_id' is the name of the URL pattern variable
         story_id = self.kwargs.get('story_id')
         return reverse('story_detail', args=[story_id])
+
+
+class EventUpdateView(LoginRequiredMixin, UpdateView):
+    model = Event

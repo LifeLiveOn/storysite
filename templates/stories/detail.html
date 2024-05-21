@@ -28,10 +28,13 @@
 
                     <div class="event-details" id="event{{ forloop.counter }}">
                         <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-image">
-                        <div class="event-content">
+                        <div class="event-content d-flex justify-content-between flex-column">
                             <h4>{{ event.title }}</h4>
-                            <p>{{ event.description }}</p>
+                                <p>{{ event.description }}</p>
                             <span class="timeline-date">{{ event.date }}</span>
+                            {% if user.id == story.user_id%}
+                                <a href="{% url 'edit_event' id=event.id %}" class="btn editEventBtn mt-2" type="button">Want to adjust this content?</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

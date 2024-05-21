@@ -24,11 +24,10 @@
 
         </h5>
     </div>
-    <div class="container mt-4 d-flex flex-row flex-wrap gap-3 mx-0" style="border-color: coral">
+    <div class="container-fluid mt-4 storyContainer justify-content-center">
         {% for story in stories %}
             {% if story.is_valid %}
-                <div class="story border border-5 rounded p-1 text-center"
-                     style="max-width: 100%">
+                <div class="story border border-5 rounded p-1 text-center ">
                     <a href="{% url 'story_detail' story_id=story.id %}"><img
                             src="media/{{ story.story_image }}" class="card-img-top" alt="...">
                     </a>

@@ -72,9 +72,12 @@
 </script>
 <script>
     const refreshPage = document.getElementById("alertClose");
-    refreshPage.addEventListener('click', () => {
-        const alertsContainer = document.getElementById("alertsContainer");
-        alertsContainer.style.display = 'none';
-    });
+    if (refreshPage) {
+        refreshPage.addEventListener('click', () => {
+            const alertsContainer = document.getElementById("alertsContainer");
+            alertsContainer.style.display = 'none';
+        });
+    }
+
 </script>
 </html>

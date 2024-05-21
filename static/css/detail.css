@@ -1,3 +1,8 @@
+:root{
+  --purple-main:#8c82d7;
+  --purple-sec:#aca6e7;
+  --purple-bold:#b48ed6;
+}
 body {
     background-color: #b5b3c5;
 }
@@ -90,4 +95,14 @@ body {
 .event-content h4 {
     color: #333;
     margin-bottom: 10px;
+}
+
+.editEventBtn{
+    background-color: var(--purple-bold);
+    color:white;
+    font-weight: bold;
+
+}
+.editEventBtn:hover{
+    background-color: var(--purple-main);
 }

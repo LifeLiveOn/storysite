@@ -1,6 +1,5 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
-from django import forms
 from . import views
 from .forms import LoginForm
 from .views import SignUpView
@@ -16,5 +15,6 @@ urlpatterns = [
                                                 authentication_form=LoginForm), name='login'),
     path('story/<int:story_id>/', views.story_detail, name='story_detail'),
     path('create/', views.StoryCreateView.as_view(), name='create'),
-    path('add/<int:story_id>', views.EventCreateView.as_view(), name='add_event')
+    path('add/<int:story_id>', views.EventCreateView.as_view(), name='add_event'),
+    path('edit_event/<int:id>', views.EventUpdateView.as_view(), name='edit_event'),
 ]
