@@ -11,7 +11,7 @@
             <ul>
                 {% for field, errors in form.errors.items %}
                     {% for error in errors %}
-                        <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                        <li><strong>{{ field|capfirst|striptags }}:</strong> {{ error }}</li>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     {% endfor %}
                 {% endfor %}

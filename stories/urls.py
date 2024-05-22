@@ -16,5 +16,5 @@ urlpatterns = [
     path('story/<int:story_id>/', views.story_detail, name='story_detail'),
     path('create/', views.StoryCreateView.as_view(), name='create'),
     path('add/<int:story_id>', views.EventCreateView.as_view(), name='add_event'),
-    path('edit_event/<int:id>', views.EventUpdateView.as_view(), name='edit_event'),
+    path('edit_event/<int:pk>', views.EventUpdateView.as_view(), name='edit_event'),
 ]

@@ -1,5 +1,7 @@
 {% extends 'stories/base.html' %}
 {% load static %}
+{% load form_tags %}  <!-- Load the custom template tags here -->
+
 {% block alternate-style %}
     <link href="{% static 'css/create.css' %}" rel="stylesheet">
     <link href="{% static 'css/register.css' %}" rel="stylesheet">
@@ -11,34 +13,28 @@
         <h2><i class="fa fa-pencil-alt" aria-hidden="true"></i>Update your journey/Life Events!</h2>
         <br>
     </div>
-    <div class="content w-75 p3">
+    <div class="content w-75 p-3">
         <form id="eventForm" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <label for="event_id" class="form-label">Life event</label>
-                <input type="text" class="form-control" name="title" maxlength="255" required=""
-                       id="event_id" placeholder="Enter your title/heading">
+                <label for="{{ form.title.id_for_label }}" class="form-label">Life event</label>
+                {{ form.title|add_attributes:"class=form-control,placeholder=Enter your title/heading" }}
             </div>
             <div class="form-group">
-                <label for="description_id" class="form-label">Description</label>
-                <textarea name="description" class="form-control" cols="40" rows="10" maxlength="500"
-                          required="" id="description_id" placeholder="What was this event about?"></textarea>
+                <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                {{ form.description|add_attributes:"class=form-control,placeholder=What was this event about?" }}
             </div>
             <div class="form-group">
-                <label for="event_date" class="form-label">Date</label>
-                <input type="date" class="form-control" name="date" required=""
-                       id="event_date" placeholder="What date was it?">
+                <label for="{{ form.date.id_for_label }}" class="form-label">Date</label>
+                {{ form.date|add_attributes:"class=form-control,placeholder=What date was it?" }}
             </div>
             <div class="form-group">
-                <label class="form-label">Add image</label>
-                <input type="file" class="form-control" name="image" id="event_image" accept=".jpg, .jpeg, .png">
+                <label for="{{ form.image.id_for_label }}" class="form-label">Add image</label>
+                {{ form.image|add_attributes:"class=form-control" }}
             </div>
-            <div id="image_wrapper">
-            </div>
+            <div id="image_wrapper"></div>
             <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    <script src="{% static 'script/pasteclip.js' %}">
-    </script>
+    <script src="{% static 'script/pasteclip.js' %}"></script>
 {% endblock %}
-
