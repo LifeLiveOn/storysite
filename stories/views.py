@@ -1,8 +1,11 @@
+import base64
+
 from django.contrib import messages
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.core.files.base import ContentFile
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy, reverse
@@ -57,10 +60,18 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
     template_name = 'stories/create.html'
     success_url = reverse_lazy('home')
 
-    # use current login user as the default user when creating stories
     def form_valid(self, form):
-        print(form.cleaned_data)
+        # use current login user as the default user when creating stories
         form.instance.user = self.request.user
+
+        # Handle cartoon image if available
+        cartoon_image_data = self.request.POST.get('cartoon_image')
+        if cartoon_image_data:
+            format, imgstr = cartoon_image_data.split(';base64,')
+            ext = format.split('/')[-1]
+            image = ContentFile(base64.b64decode(imgstr), name='cartoon_image.' + ext)
+            form.instance.story_image = image
+
         return super().form_valid(form)
 
 

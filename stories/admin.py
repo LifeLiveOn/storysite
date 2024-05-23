@@ -18,7 +18,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
     def email_link(self, obj):
         link = f'/admin/stories/customuser/{obj.id}/change/'
-        return format_html('<a href="{}">{}</a>', link, obj.email)
+        return format_html(f'<a href="{link}">{obj.email}</a>')
 
     email_link.short_description = 'Email Address'
 
@@ -32,5 +32,5 @@ admin.site.register(Event)
 
 @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):
-    list_display = ('story_name', 'is_valid')
+    list_display = ('story_name', 'is_valid', 'user')
     fields = ('user', 'story_name', 'story_description', 'story_image', 'is_valid')

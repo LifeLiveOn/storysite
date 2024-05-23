@@ -31,12 +31,69 @@
             <div class="form-group">
                 <label class="form-label">Insert story image</label>
                 <input type="file" class="form-control" name="story_image" id="story_image" accept=".jpg, .jpeg, .png">
+                <input type="hidden" name="cartoon_image" id="cartoon_image">
             </div>
             <div id="image_wrapper">
-
+                <canvas id="originalCanvas" style="display: none;"></canvas>
+                <canvas id="cartoonCanvas"></canvas>
             </div>
+            <button type="button" id="saveButton" class="btn btn-primary">Apply Cartoon Effect</button>
             <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+    <script async src="https://docs.opencv.org/4.x/opencv.js" type="text/javascript"></script>
     <script src="{% static 'script/pasteclip.js' %}"></script>
+    <script>
+        document.getElementById('story_image').addEventListener('change', function (e) {
+            let file = e.target.files[0];
+            let reader = new FileReader();
+
+            reader.onload = function (event) {
+                let img = new Image();
+                img.onload = function () {
+                    let originalCanvas = document.getElementById('originalCanvas');
+                    let ctx = originalCanvas.getContext('2d');
+                    originalCanvas.width = img.width;
+                    originalCanvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('saveButton').addEventListener('click', function () {
+            let originalCanvas = document.getElementById('originalCanvas');
+            let cartoonCanvas = document.getElementById('cartoonCanvas');
+            let src = cv.imread(originalCanvas);
+            let dst = new cv.Mat();
+            cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
+
+            cv.bilateralFilter(src, dst, 9, 75, 75, cv.BORDER_DEFAULT);
+            cv.cvtColor(dst, dst, cv.COLOR_RGB2GRAY, 0);
+            cv.medianBlur(dst, dst, 7);
+            cv.adaptiveThreshold(dst, dst, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 9, 2);
+            cv.cvtColor(dst, dst, cv.COLOR_GRAY2RGB, 0);
+            cv.bitwise_and(src, dst, dst);
+
+            // Resize the cartoonized image
+            let desiredWidth = 800;
+            let aspectRatio = dst.rows / dst.cols;
+            let newSize = new cv.Size(desiredWidth, Math.round(desiredWidth * aspectRatio));
+            cv.resize(dst, dst, newSize, 0, 0, cv.INTER_AREA);
+
+            cv.imshow('cartoonCanvas', dst);
+            src.delete();
+            dst.delete();
+
+            cartoonCanvas.toBlob(function (blob) {
+                let reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                    let base64data = reader.result;
+                    document.getElementById('cartoon_image').value = base64data;
+                }
+            }, 'image/png', 0.8);
+        });
+    </script>
 {% endblock %}

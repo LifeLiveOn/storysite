@@ -141,3 +141,6 @@ AUTO_LOGOUT = {
     'SESSION_TIME': 86400,
     'MESSAGE': 'The session has expired. Please login again to continue.'
 }
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
+
