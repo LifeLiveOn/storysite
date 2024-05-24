@@ -3,20 +3,22 @@ const fileInput = document.getElementById("event_image");
 const formStory = document.getElementById("storyForm");
 const fileInput2 = document.getElementById("story_image");
 
-const WIDTH = 600;
+const MAX_DIMENSION = 600;
 
-function handleFileInputChange(fileInput, form, storyWrapperId) {
+function handleFileInputChange(fileInput, form, wrapperId) {
     fileInput.addEventListener('change', (event) => {
-        if (storyWrapperId) {
-            displayImage(event.target.files[0], storyWrapperId);
+        if (wrapperId) {
+            displayImage(event.target.files[0], wrapperId);
         }
-        //form.submit();
+        //form.submit(); // Uncomment if the form needs to be submitted automatically
     });
 
     window.addEventListener('paste', (e) => {
-        fileInput.files = e.clipboardData.files;
-        if (storyWrapperId) {
-            displayImage(fileInput.files[0], storyWrapperId);
+        if (e.clipboardData.files.length > 0) {
+            fileInput.files = e.clipboardData.files;
+            if (wrapperId) {
+                displayImage(fileInput.files[0], wrapperId);
+            }
         }
     });
 }
@@ -28,26 +30,39 @@ function displayImage(file, wrapperId) {
     reader.onload = (event) => {
         const image = document.createElement("img");
 
-        image.onload = (e) => {
+        image.onload = () => {
             const canvas = document.createElement("canvas");
-            const ratio = WIDTH / e.target.width; // calculate the aspect ratio
-            canvas.width = WIDTH;
-            canvas.height = e.target.height * ratio; // maintain the aspect ratio
-
             const context = canvas.getContext("2d");
-            context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-            const newImageUrl = context.canvas.toDataURL("image/jpeg", 1.0); // use maximum quality (1.0)
+            let newWidth = image.width;
+            let newHeight = image.height;
+
+            if (newWidth > newHeight && newWidth > MAX_DIMENSION) {
+                newHeight = Math.round((MAX_DIMENSION / newWidth) * newHeight);
+                newWidth = MAX_DIMENSION;
+            } else if (newHeight > newWidth && newHeight > MAX_DIMENSION) {
+                newWidth = Math.round((MAX_DIMENSION / newHeight) * newWidth);
+                newHeight = MAX_DIMENSION;
+            } else if (newWidth > MAX_DIMENSION) {
+                newHeight = Math.round((MAX_DIMENSION / newWidth) * newHeight);
+                newWidth = MAX_DIMENSION;
+            } else if (newHeight > MAX_DIMENSION) {
+                newWidth = Math.round((MAX_DIMENSION / newHeight) * newWidth);
+                newHeight = MAX_DIMENSION;
+            }
+
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            context.drawImage(image, 0, 0, newWidth, newHeight);
+
+            const newImageUrl = canvas.toDataURL("image/jpeg", 1.0);
 
             const newImage = document.createElement("img");
             newImage.src = newImageUrl;
 
             const wrapper = document.getElementById(wrapperId);
-            const existingImage = wrapper.querySelector("img");
-
-            if (existingImage) {
-                wrapper.removeChild(existingImage);
-            }
+            wrapper.innerHTML = ''; // Clear previous content
             wrapper.appendChild(newImage);
         };
 
@@ -59,6 +74,3 @@ if (fileInput) {
     handleFileInputChange(fileInput, form, "image_wrapper");
 }
 
-if (fileInput2) {
-    handleFileInputChange(fileInput2, formStory, "image_wrapper");
-}

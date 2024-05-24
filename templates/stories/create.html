@@ -44,56 +44,73 @@
     <script async src="https://docs.opencv.org/4.x/opencv.js" type="text/javascript"></script>
     <script src="{% static 'script/pasteclip.js' %}"></script>
     <script>
-        document.getElementById('story_image').addEventListener('change', function (e) {
-            let file = e.target.files[0];
-            let reader = new FileReader();
+        document.addEventListener('DOMContentLoaded', function () {
+            const storyImageInput = document.getElementById('story_image');
+            const originalCanvas = document.getElementById('originalCanvas');
+            const cartoonCanvas = document.getElementById('cartoonCanvas');
+            const saveButton = document.getElementById('saveButton');
+            const cartoonImageInput = document.getElementById('cartoon_image');
 
-            reader.onload = function (event) {
-                let img = new Image();
-                img.onload = function () {
-                    let originalCanvas = document.getElementById('originalCanvas');
-                    let ctx = originalCanvas.getContext('2d');
-                    originalCanvas.width = img.width;
-                    originalCanvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
-
-        document.getElementById('saveButton').addEventListener('click', function () {
-            let originalCanvas = document.getElementById('originalCanvas');
-            let cartoonCanvas = document.getElementById('cartoonCanvas');
-            let src = cv.imread(originalCanvas);
-            let dst = new cv.Mat();
-            cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
-
-            cv.bilateralFilter(src, dst, 9, 75, 75, cv.BORDER_DEFAULT);
-            cv.cvtColor(dst, dst, cv.COLOR_RGB2GRAY, 0);
-            cv.medianBlur(dst, dst, 7);
-            cv.adaptiveThreshold(dst, dst, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 9, 2);
-            cv.cvtColor(dst, dst, cv.COLOR_GRAY2RGB, 0);
-            cv.bitwise_and(src, dst, dst);
-
-            // Resize the cartoonized image
-            let desiredWidth = 800;
-            let aspectRatio = dst.rows / dst.cols;
-            let newSize = new cv.Size(desiredWidth, Math.round(desiredWidth * aspectRatio));
-            cv.resize(dst, dst, newSize, 0, 0, cv.INTER_AREA);
-
-            cv.imshow('cartoonCanvas', dst);
-            src.delete();
-            dst.delete();
-
-            cartoonCanvas.toBlob(function (blob) {
-                let reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = function () {
-                    let base64data = reader.result;
-                    document.getElementById('cartoon_image').value = base64data;
+            storyImageInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const img = new Image();
+                        img.onload = function () {
+                            originalCanvas.width = img.width;
+                            originalCanvas.height = img.height;
+                            const ctx = originalCanvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0);
+                            originalCanvas.style.display = 'block';
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
                 }
-            }, 'image/png', 0.8);
+            });
+
+            saveButton.addEventListener('click', function () {
+                const src = cv.imread(originalCanvas);
+                const dst = new cv.Mat();
+                cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
+                cv.bilateralFilter(src, dst, 9, 75, 75, cv.BORDER_DEFAULT);
+                cv.cvtColor(dst, dst, cv.COLOR_RGB2GRAY, 0);
+                cv.medianBlur(dst, dst, 7);
+                cv.adaptiveThreshold(dst, dst, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 9, 2);
+                cv.cvtColor(dst, dst, cv.COLOR_GRAY2RGB, 0);
+                cv.bitwise_and(src, dst, dst);
+
+                // Resize the cartoonized image while maintaining the aspect ratio
+                const maxWidth = 800;
+                const maxHeight = 800;
+                let newWidth = dst.cols;
+                let newHeight = dst.rows;
+
+                if (newWidth > newHeight && newWidth > maxWidth) {
+                    newHeight = Math.round((maxWidth / newWidth) * newHeight);
+                    newWidth = maxWidth;
+                } else if (newHeight > newWidth && newHeight > maxHeight) {
+                    newWidth = Math.round((maxHeight / newHeight) * newWidth);
+                    newHeight = maxHeight;
+                }
+
+                const newSize = new cv.Size(newWidth, newHeight);
+                cv.resize(dst, dst, newSize, 0, 0, cv.INTER_AREA);
+
+                cv.imshow('cartoonCanvas', dst);
+                src.delete();
+                dst.delete();
+
+                cartoonCanvas.toBlob(function (blob) {
+                    const reader = new FileReader();
+                    reader.onloadend = function () {
+                        cartoonImageInput.value = reader.result;
+                    };
+                    reader.readAsDataURL(blob);
+                }, 'image/png', 0.8);
+            });
         });
+
     </script>
 {% endblock %}

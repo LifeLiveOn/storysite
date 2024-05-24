@@ -3,7 +3,7 @@ import base64
 from django.contrib import messages
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import ContentFile
 from django.http import HttpResponseRedirect
@@ -16,14 +16,10 @@ from .models import Story, Event
 
 User = get_user_model()
 
-
 # Create your views here.
 class HomePageView(ListView):
-    # paginate_by = 5
-    # descending order
     model = Story
     ordering = ['-id']
-
     context_object_name = 'stories'
     template_name = 'stories/home.html'
 
@@ -34,17 +30,16 @@ def story_detail(res, story_id):
 
 
 def about(res):
-    return None
+    return render(res, 'stories/about.html')
 
 
 def contact(res):
-    return None
+    return render(res, 'stories/contact.html')
 
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     template_name = "registration/signup.html"
-
     success_url = reverse_lazy('login')
 
 
@@ -61,7 +56,6 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        # use current login user as the default user when creating stories
         form.instance.user = self.request.user
 
         # Handle cartoon image if available
@@ -75,44 +69,44 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class EventCreateView(LoginRequiredMixin, CreateView):
+class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Event
     form_class = EventForm
     template_name = 'stories/add.html'
 
-    def dispatch(self, request, *args, **kwargs):
+    def test_func(self):
         story_id = self.kwargs['story_id']
         self.story = get_object_or_404(Story, id=story_id)
+        return self.story.user == self.request.user
 
-        if self.story.user != self.request.user:
-            raise PermissionDenied("You do not have the permission to access this page")
-        return super().dispatch(request, *args, **kwargs)
+    def handle_no_permission(self):
+        raise PermissionDenied("You do not have the permission to access this page")
 
     def form_valid(self, form):
-        story_id = self.kwargs['story_id']
         form.instance.story = self.story
-        print(form.cleaned_data)
         return super().form_valid(form)
 
     def get_success_url(self):
-        # Assuming 'story_id' is the name of the URL pattern variable
         story_id = self.kwargs.get('story_id')
-        return HttpResponseRedirect(reverse('story_detail', args=[story_id]))
+        return reverse('story_detail', args=[story_id])
 
 
-class EventUpdateView(LoginRequiredMixin, UpdateView):
+class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Event
     fields = ['title', 'description', 'date', 'image']
     template_name = 'stories/add.html'
 
-    def dispatch(self, request, *args, **kwargs):
+    def test_func(self):
         event_id = self.kwargs['pk']
         self.event = get_object_or_404(Event, id=event_id)
+        return self.event.story.user == self.request.user
 
-        if self.event.story.user != self.request.user:
-            raise PermissionDenied("You do not have the permission to access this page")
-        return super().dispatch(request, *args, **kwargs)
+    def handle_no_permission(self):
+        raise PermissionDenied("You do not have the permission to access this page")
 
     def form_valid(self, form):
         messages.success(self.request, 'This has been updated!')
-        return super(EventUpdateView, self).form_valid(form)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('story_detail', args=[self.event.story.id])
