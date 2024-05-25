@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -154,3 +155,5 @@ AUTO_LOGOUT = {
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
 
 CSRF_TRUSTED_ORIGINS = ['https://storysite-production.up.railway.app']
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
