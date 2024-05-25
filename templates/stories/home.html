@@ -2,35 +2,26 @@
 {% load static %}
 
 {% block alternate-style %}
-    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-    <div class="legend text-center mt-2 py-5 text-white"
-         style="background-color:#8c82d7;font-family:'Poppins', sans-serif;">
+    <div class="legend text-center mt-2 py-5 text-white" style="background-color:#8c82d7;font-family:'Poppins', sans-serif;">
         <h2>Craft Your Legacy: Share Your Story with the World</h2>
         <br>
-        <h5 class="text-muted fst-italic text-white">Join us today to share your amazing
-            journey to the whole world.
-            {% if user.id %}
-                <a
-                        href="{% url 'create' %}" class="btn btn-primary">Share here!
-                </a>
+        <h5 class="text-muted fst-italic text-white">Join us today to share your amazing journey with the whole world.
+            {% if user.is_authenticated %}
+                <a href="{% url 'create' %}" class="btn btn-primary">Share here!</a>
             {% else %}
-                <a style="color:rgb(52,58,64)"
-                   href="{% url 'signup' %}">Create Account!
-                </a>
+                <a style="color:rgb(52,58,64)" href="{% url 'signup' %}">Create Account!</a>
             {% endif %}
-
         </h5>
     </div>
     <div class="container-fluid mt-4 storyContainer justify-content-center">
         {% for story in stories %}
             {% if story.is_valid %}
-                <div class="story border border-5 rounded p-1 text-center ">
-                    <a href="{% url 'story_detail' story_id=story.id %}"><img
-                            src="media/{{ story.story_image }}" class="card-img-top" alt="...">
-                    </a>
+                <div class="story border border-5 rounded p-1 text-center">
+                    <a href="{% url 'story_detail' story_id=story.id %}"><img src="{{ story.story_image.url }}" class="card-img-top" alt="..."></a>
                     <h2>{{ story.story_name }}</h2>
                 </div>
             {% endif %}
