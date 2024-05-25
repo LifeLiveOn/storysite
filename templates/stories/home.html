@@ -21,7 +21,7 @@
         {% for story in stories %}
             {% if story.is_valid %}
                 <div class="story border border-5 rounded p-1 text-center">
-                    <a href="{% url 'story_detail' story_id=story.id %}"><img src="{{ story.story_image.url }}" class="card-img-top" alt="..."></a>
+                    <a href="{% url 'story_detail' story_id=story.id %}"><img src="{{ story.story_image.url }}" class="card-img-top" alt="{{ story.image.name }}"></a>
                     <h2>{{ story.story_name }}</h2>
                 </div>
             {% endif %}
