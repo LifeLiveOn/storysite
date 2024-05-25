@@ -25,11 +25,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them:
-
-```bash
- ...
-```
+What things you need to install the software and how to install them:c
 
 ### Installing
 
@@ -61,6 +57,23 @@ python manage.py runserver
 ```
 
 6. Visit `http://127.0.0.1:8000` in your browser to view the application.
+
+7. Have your .env file to proceed with the web functionalities, feel free to adjust from settings.py to remove unecessary utilities if your working on local
+```bash
+DEBUG=# either False Or True
+PGDATABASE=# your database name
+PGHOST=# your database host
+PGPASSWORD=# your database password
+PGPORT=# your database port
+PGUSER=# your database user
+SECRET_KEY=# your secret key, e.g., qxwna35$pck
+
+# Make sure to have your media file storage hosting service API key if you deploy, else remove cloudinary from installed_apps in settings.py
+CLOUDINARY_CLOUD_NAME=# your Cloudinary cloud name
+CLOUDINARY_API_KEY=# your Cloudinary API key
+CLOUDINARY_API_SECRET=# your Cloudinary API secret
+
+```
 
 ## Contributing
 
