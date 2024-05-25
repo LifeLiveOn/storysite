@@ -1,0 +1,73 @@
+/* General page enhancements */
+body, html {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    min-height: 100%; /* Change to min-height to allow for content longer than the viewport */
+    overflow-x: hidden; /* Hide horizontal scroll */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Legend Section */
+.legend {
+    padding: 2rem 0;
+    background-color: rgba(0,0,0,0.5); /* Semi-transparent overlay for better readability */
+    position: relative;
+}
+
+.legend h2 {
+    font-style: normal;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    display: inline-block; /* Allows icon and text alignment */
+}
+
+.fa-pencil-alt { /* Example using Font Awesome, make sure to include Font Awesome in your project */
+    margin-right: 10px;
+    color: #fff;
+}
+
+/* Content Section */
+.content {
+    margin: 2rem auto;
+    width: 50%;
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    padding: 0.75rem 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.form-control:focus {
+    border-color: #665ed0;
+    box-shadow: 0 0 5px rgba(102, 94, 208, 0.5);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #665ed0;
+    border-color: #665ed0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Enhanced visibility on hover */
+}
+
+.btn-primary:hover {
+    background-color: #5748a1;
+    border-color: #5748a1;
+}
+
+/*
