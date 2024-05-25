@@ -15,9 +15,9 @@ LifeStories is a Django-based web platform dedicated to sharing personal narrati
 ## Technology Stack
 
 - **Backend**: Django (Python)
-- **Database**: SQLite (development), PostgreSQL (production)
+- **Database**: SQLite (development), PostgreSQL (production),
 - **Frontend**: HTML, CSS (Bootstrap for styling), JavaScript
-- **Additional Tools**: in development... (will add Docker) to further simplify the process of deployment.
+- **Additional Tools**:  Cloudinary, whitenose, django-auto-logout, django-cleanup (will add Docker) to further simplify the process of deployment.
 
 ## Getting Started
 
